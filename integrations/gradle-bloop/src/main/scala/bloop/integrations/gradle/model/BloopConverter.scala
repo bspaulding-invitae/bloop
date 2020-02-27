@@ -414,10 +414,15 @@ class BloopConverter(parameters: BloopParameters) {
   }
 
   def getProjectName(project: Project, sourceSet: SourceSet): String = {
+    val projectsWithName = project.getRootProject
+      .getAllprojects()
+      .asScala
+      .filter(p => p.getName == project.getName)
+    val projectName = if (projectsWithName.size == 1) project.getName else project.getPath
     if (sourceSet.getName == SourceSet.MAIN_SOURCE_SET_NAME) {
-      project.getName
+      projectName
     } else {
-      s"${project.getName}-${sourceSet.getName}"
+      s"${projectName}-${sourceSet.getName}"
     }
   }
 
