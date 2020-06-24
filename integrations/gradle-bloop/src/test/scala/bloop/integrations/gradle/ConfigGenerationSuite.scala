@@ -607,10 +607,10 @@ abstract class ConfigGenerationSuite {
     val projectName = testProjectDir.getRoot.getName
     val bloopDir = new File(testProjectDir.getRoot, ".bloop")
     val bloopNone = new File(bloopDir, s"${projectName}.json")
-    val bloopA = new File(bloopDir, ":a:foo.json")
-    val bloopB = new File(bloopDir, ":b:foo.json")
-    val bloopC = new File(bloopDir, ":c:foo.json")
-    val bloopD = new File(bloopDir, ":d:foo.json")
+    val bloopA = new File(bloopDir, "a-foo.json")
+    val bloopB = new File(bloopDir, "b-foo.json")
+    val bloopC = new File(bloopDir, "c-foo.json")
+    val bloopD = new File(bloopDir, "d-foo.json")
 
     assert(!bloopNone.exists())
     val configA = readValidBloopConfig(bloopA)
@@ -618,8 +618,8 @@ abstract class ConfigGenerationSuite {
     val configC = readValidBloopConfig(bloopC)
     val configD = readValidBloopConfig(bloopD)
 
-    assert(compileBloopProject(":b:foo", bloopDir).status.isOk)
-    assert(compileBloopProject(":d:foo", bloopDir).status.isOk)
+    assert(compileBloopProject("b-foo", bloopDir).status.isOk)
+    assert(compileBloopProject("d-foo", bloopDir).status.isOk)
   }
 
   // problem here is that to specify the test sourceset of project b depends on the test sourceset of project a using

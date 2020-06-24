@@ -418,11 +418,24 @@ class BloopConverter(parameters: BloopParameters) {
       .getAllprojects()
       .asScala
       .filter(p => p.getName == project.getName)
-    val projectName = if (projectsWithName.size == 1) project.getName else project.getPath
+    val rawProjectName = if (projectsWithName.size == 1) project.getName else project.getPath
+    val sanitizedProjectName = rawProjectName.zipWithIndex
+      .map {
+        case (c, i) =>
+          if (i == 0 && c == ':') {
+            None
+          } else if (c == ':') {
+            Some('-')
+          } else {
+            Some(c)
+          }
+      }
+      .flatten
+      .mkString
     if (sourceSet.getName == SourceSet.MAIN_SOURCE_SET_NAME) {
-      projectName
+      sanitizedProjectName
     } else {
-      s"${projectName}-${sourceSet.getName}"
+      s"${sanitizedProjectName}-${sourceSet.getName}"
     }
   }
 
